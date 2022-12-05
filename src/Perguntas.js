@@ -9,62 +9,63 @@ import App from './App'
 
 
 export default function Perguntas(props) {
-  const [virouflashcard,setvirouflashcard] = React.useState([])
-  const [abrirpergunta,setabrirpergunta] = React.useState([])
-  const [virarresposta,setresposta] = React.useState([])
-  const [virarred,setred] = React.useState([])
-  const [viraryellow,setyellow] = React.useState([])
-  const [virargreen,setgreen] = React.useState([])
-  const [colorfinal,setColor] = React.useState(props.cards.map(()=>"#333333"))
-  const [iconfinal,setIcon] = React.useState(props.cards.map(()=>play))
-  const [datatesticon,setdatatest] = React.useState(props.cards.map(()=>"play-btn"))
+  const [virouflashcard, setvirouflashcard] = React.useState([])
+  const [abrirpergunta, setabrirpergunta] = React.useState([])
+  const [virarresposta, setresposta] = React.useState([])
+  const [virarred, setred] = React.useState([])
+  const [viraryellow, setyellow] = React.useState([])
+  const [virargreen, setgreen] = React.useState([])
+  const [colorfinal, setColor] = React.useState(props.cards.map(() => "#333333"))
+  const [iconfinal, setIcon] = React.useState(props.cards.map(() => play))
+  const [datatesticon, setdatatest] = React.useState(props.cards.map(() => "play-btn"))
   let arraygreen = []
   let arrayred = []
   let arrayyellow = []
 
-	return (
-		<div>
-			{props.cards.map((deck,i) =>
-				<div data-test="flashcard">
-					<Perguntafechada verificarflashcard={virouflashcard.includes(i)} color={colorfinal[i]} finalizou={props.finalizadas.includes(i)}>
-						<p data-test="flashcard-text">Pergunta {i+1}</p>
-						<img src={iconfinal[i]} onClick={()=>acionarFlashCard(i)} data-test={datatesticon[i]}></img>
-					</Perguntafechada>
-					<Perguntaabertapergunta abrirprimeirapergunta={abrirpergunta.includes(i)} data-test="flashcard-text">
-						{deck.question}
-						<Perguntaabertaimagem src={virar} onClick={()=>acionarResposta(i)} data-test="turn-btn"/>
-					</Perguntaabertapergunta>
-					<Perguntaabertaresposta abrirresposta={virarresposta.includes(i)} data-test="flashcard-text">
-						{deck.answer}
-						<Perguntaabertacaixabotao>
-							<Perguntaabertabotao background="#FF3030" onClick={()=>red(i)} data-test="no-btn">Não lembrei</Perguntaabertabotao>
-							<Perguntaabertabotao background="#FF922E" onClick={()=>yellow(i)} data-test="partial-btn">Quase não lembrei</Perguntaabertabotao>
-							<Perguntaabertabotao background="#2FBE34" onClick={()=>green(i)} data-test="zap-btn">Zap!</Perguntaabertabotao>
-						</Perguntaabertacaixabotao>
+  return (
+    <div>
+      {props.cards.map((deck, i) =>
+        <div data-test="flashcard">
+          <Perguntafechada verificarflashcard={virouflashcard.includes(i)} color={colorfinal[i]} finalizou={props.finalizadas.includes(i)} data-test="flashcard">
+            <p data-test="flashcard-text">Pergunta {i + 1}</p>
+            <img src={iconfinal[i]} onClick={() => acionarFlashCard(i)} data-test={datatesticon[i]} ></img>
+          </Perguntafechada>
+          <Perguntaabertapergunta abrirprimeirapergunta={abrirpergunta.includes(i)} data-test="flashcard-text">
+            {deck.question}
+            <Perguntaabertaimagem src={virar} onClick={() => acionarResposta(i)} data-test="turn-btn" />
+          </Perguntaabertapergunta>
+          <Perguntaabertaresposta abrirresposta={virarresposta.includes(i)} data-test="flashcard-text">
+            {deck.answer}
+            <Perguntaabertacaixabotao>
+              <Perguntaabertabotao background="#FF3030" onClick={() => red(i)} data-test="no-btn">Não lembrei</Perguntaabertabotao>
+              <Perguntaabertabotao background="#FF922E" onClick={() => yellow(i)} data-test="partial-btn">Quase não lembrei</Perguntaabertabotao>
+              <Perguntaabertabotao background="#2FBE34" onClick={() => green(i)} data-test="zap-btn">Zap!</Perguntaabertabotao>
+            </Perguntaabertacaixabotao>
 
-					</Perguntaabertaresposta>
-					
-				</div>
-				
-				)}
-		</div>
-	)
+          </Perguntaabertaresposta>
 
-  function acionarFlashCard(i){
+        </div>
+
+      )}
+    </div>
+  )
+
+  function acionarFlashCard(i) {
     let arrayinicial = [...virouflashcard]
-    arrayinicial.push(i)
-    setvirouflashcard(arrayinicial)
-    virarpergunta(i)
-    
+    if (!props.finalizadas.includes(i)) {
+      arrayinicial.push(i)
+      setvirouflashcard(arrayinicial)
+      virarpergunta(i)
+    }
   }
 
-  function virarpergunta(i){
+  function virarpergunta(i) {
     let arrayinicial = [...abrirpergunta]
     arrayinicial.push(i)
     setabrirpergunta(arrayinicial)
   }
 
-  function acionarResposta(i){
+  function acionarResposta(i) {
     setabrirpergunta([])
     let arrayinicial = [...virarresposta]
     arrayinicial.push(i)
@@ -72,7 +73,7 @@ export default function Perguntas(props) {
 
   }
 
-  function red(i){
+  function red(i) {
     setresposta([])
     let arrayinicial = [...virarred]
     let arraysecundario = [...props.finalizadas]
@@ -83,11 +84,11 @@ export default function Perguntas(props) {
     arrayred.push(i)
     setred(arrayinicial)
     decidircor(i)
-    
+
   }
 
 
-  function yellow(i){
+  function yellow(i) {
     setresposta([])
     let arrayinicial = [...viraryellow]
     let arraysecundario = [...props.finalizadas]
@@ -101,7 +102,7 @@ export default function Perguntas(props) {
   }
 
 
-  function green(i){
+  function green(i) {
     setresposta([])
     let arrayinicial = [...virargreen]
     let arraysecundario = [...props.finalizadas]
@@ -114,26 +115,26 @@ export default function Perguntas(props) {
     decidircor(i)
   }
 
-  function decidircor(i){
+  function decidircor(i) {
     let arrayicones = [...iconfinal]
     let arraycores = [...colorfinal]
     let arraydata = [...datatesticon]
 
-    if (arrayred.includes(i)){
+    if (arrayred.includes(i)) {
       arrayicones[i] = erro
       arraycores[i] = "#FF3030"
       arraydata[i] = "no-icon"
       setColor(arraycores)
       setIcon(arrayicones)
       setdatatest(arraydata)
-    }else if (arrayyellow.includes(i)){
+    } else if (arrayyellow.includes(i)) {
       arrayicones[i] = quase
       arraycores[i] = "#FF922E"
       arraydata[i] = "partial-icon"
       setColor(arraycores)
       setIcon(arrayicones)
       setdatatest(arraydata)
-    }else{
+    } else {
       arrayicones[i] = certo
       arraycores[i] = "#2FBE34"
       arraydata[i] = "zap-icon"
@@ -156,7 +157,7 @@ width: 300px;
   padding: 15px;
   box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15);
   border-radius: 5px;
-  display: ${props => props.verificarflashcard ? "none":"flex"};
+  display: ${props => props.verificarflashcard ? "none" : "flex"};
   align-items: center;
   justify-content: space-between;
   position: relative;
@@ -167,7 +168,7 @@ width: 300px;
   font-size: 16px;
   line-height: 19px;
   color: ${props => props.color};
-  text-decoration: ${props => props.finalizou ? "line-through":"none"};
+  text-decoration: ${props => props.finalizou ? "line-through" : "none"};
   }
   img{
 	position: absolute;
@@ -190,11 +191,11 @@ width: 300px;
   line-height: 22px;
   color: #333333;
   position: relative;
-  display: ${props => props.abrirprimeirapergunta ? "flex":"none"};
+  display: ${props => props.abrirprimeirapergunta ? "flex" : "none"};
   flex-direction: column;
   justify-content: space-between;`
 
-const Perguntaabertaresposta= styled.div`
+const Perguntaabertaresposta = styled.div`
 width: 300px;
   margin: 12px;
   padding: 15px;
@@ -209,7 +210,7 @@ width: 300px;
   line-height: 22px;
   color: #333333;
   position: relative;
-  display: ${props => props.abrirresposta? "flex":"none"};
+  display: ${props => props.abrirresposta ? "flex" : "none"};
   flex-direction: column;
   justify-content: space-between;`
 
