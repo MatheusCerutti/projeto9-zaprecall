@@ -1,9 +1,11 @@
 import styled from 'styled-components'
+import App from './App'
+import Perguntas from './Perguntas'
 
-export default function Resultado(){
+export default function Resultado(props){
     return (
         <Footerconcluidos>
-            0/4 CONCLUÍDOS
+            {props.finalizadas.length}/{props.cards.length} CONCLUÍDOS
         </Footerconcluidos>
     )
 }

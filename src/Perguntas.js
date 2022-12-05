@@ -2,41 +2,32 @@ import React from 'react'
 import styled from 'styled-components'
 import virar from './assets/img/seta_virar.png'
 import play from './assets/img/seta_play.png'
+import certo from './assets/img/icone_certo.png'
+import erro from './assets/img/icone_erro.png'
+import quase from './assets/img/icone_quase.png'
+import App from './App'
 
-const cards = [
-	{ question: "O que é JSX?", answer: "Uma extensão da linguagem JavaScript" },
-	{ question: "O React é __", answer: "Uma biblioteca JavaScript para construção de interfaces" },
-	{ question: "Componentes devem iniciar com __", answer: "Letra maiúscula" },
-	{ question: "Podemos colocar __ dentro do JSX", answer: "expressões" },
-	{ question: "O ReactDOM nos ajuda __", answer: "Interagindo com a DOM para colocar componentes React na mesma" },
-	{ question: "Usamos o npm para __", answer: "Gerenciar os pacotes necessários e suas dependências" },
-	{ question: "Usamos props para __", answer: "Passar diferentes informações para componentes" },
-	{ question: "Usamos estado (state) para __", answer: "Dizer para o React quais informações quando atualizadas devem renderizar a tela novamente" }
-]
 
-export default function Perguntas() {
-	const [normal, setnormal] = React.useState(cards.question)
-	const [contador,setcontador] = React.useState(1)
-  const [flashcard,setflashcard]= React.useState(false)
+export default function Perguntas(props) {
   const [virouflashcard,setvirouflashcard] = React.useState([])
   const [abrirpergunta,setabrirpergunta] = React.useState([])
   const [virarresposta,setresposta] = React.useState([])
   const [virarred,setred] = React.useState([])
   const [viraryellow,setyellow] = React.useState([])
   const [virargreen,setgreen] = React.useState([])
-  const [colorfinal,setColor] = React.useState("#333333")
-  const [finalizadas,setfinalizadas] = React.useState("")
+  const [colorfinal,setColor] = React.useState(props.cards.map(()=>"#333333"))
+  const [iconfinal,setIcon] = React.useState(props.cards.map(()=>play))
   let arraygreen = []
   let arrayred = []
   let arrayyellow = []
 
 	return (
 		<div>
-			{cards.map((deck,i) =>
+			{props.cards.map((deck,i) =>
 				<div>
-					<Perguntafechada verificarflashcard={virouflashcard.includes(i)} color={colorfinal} finalizou={finalizadas.includes(i)}>
+					<Perguntafechada verificarflashcard={virouflashcard.includes(i)} color={colorfinal[i]} finalizou={props.finalizadas.includes(i)}>
 						<p>Pergunta {i+1}</p>
-						<img src={play} onClick={()=>acionarFlashCard(i)}></img>
+						<img src={iconfinal[i]} onClick={()=>acionarFlashCard(i)} ></img>
 					</Perguntafechada>
 					<Perguntaabertapergunta abrirprimeirapergunta={abrirpergunta.includes(i)}>
 						{deck.question}
@@ -83,9 +74,9 @@ export default function Perguntas() {
   function red(i){
     setresposta([])
     let arrayinicial = [...virarred]
-    let arraysecundario = [...finalizadas]
+    let arraysecundario = [...props.finalizadas]
     arraysecundario.push(i)
-    setfinalizadas(arraysecundario)
+    props.setfinalizadas(arraysecundario)
     setvirouflashcard([])
     arrayinicial.push(i)
     arrayred.push(i)
@@ -98,9 +89,9 @@ export default function Perguntas() {
   function yellow(i){
     setresposta([])
     let arrayinicial = [...viraryellow]
-    let arraysecundario = [...finalizadas]
+    let arraysecundario = [...props.finalizadas]
     arraysecundario.push(i)
-    setfinalizadas(arraysecundario)
+    props.setfinalizadas(arraysecundario)
     setvirouflashcard([])
     arrayinicial.push(i)
     arrayyellow.push(i)
@@ -112,25 +103,35 @@ export default function Perguntas() {
   function green(i){
     setresposta([])
     let arrayinicial = [...virargreen]
-    let arraysecundario = [...finalizadas]
+    let arraysecundario = [...props.finalizadas]
     arraysecundario.push(i)
-    setfinalizadas(arraysecundario)
+    props.setfinalizadas(arraysecundario)
     setvirouflashcard([])
     arrayinicial.push(i)
     arraygreen.push(i)
-
     setgreen(arrayinicial)
-  
     decidircor(i)
   }
 
   function decidircor(i){
+    let arrayicones = [...iconfinal]
+    let arraycores = [...colorfinal] 
+
     if (arrayred.includes(i)){
-      setColor("#FF3030")
+      arrayicones[i] = erro
+      arraycores[i] = "#FF3030"
+      setColor(arraycores)
+      setIcon(arrayicones)
     }else if (arrayyellow.includes(i)){
-      setColor("#FF922E")
+      arrayicones[i] = quase
+      arraycores[i] = "#FF922E"
+      setColor(arraycores)
+      setIcon(arrayicones)
     }else{
-      setColor("#2FBE34")
+      arrayicones[i] = certo
+      arraycores[i] = "#2FBE34"
+      setColor(arraycores)
+      setIcon(arrayicones)
     }
   }
 
