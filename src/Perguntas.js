@@ -17,6 +17,7 @@ export default function Perguntas(props) {
   const [virargreen,setgreen] = React.useState([])
   const [colorfinal,setColor] = React.useState(props.cards.map(()=>"#333333"))
   const [iconfinal,setIcon] = React.useState(props.cards.map(()=>play))
+  const [datatesticon,setdatatest] = React.useState(props.cards.map(()=>"play-btn"))
   let arraygreen = []
   let arrayred = []
   let arrayyellow = []
@@ -25,20 +26,20 @@ export default function Perguntas(props) {
 		<div>
 			{props.cards.map((deck,i) =>
 				<div>
-					<Perguntafechada verificarflashcard={virouflashcard.includes(i)} color={colorfinal[i]} finalizou={props.finalizadas.includes(i)}>
-						<p>Pergunta {i+1}</p>
-						<img src={iconfinal[i]} onClick={()=>acionarFlashCard(i)} ></img>
+					<Perguntafechada verificarflashcard={virouflashcard.includes(i)} color={colorfinal[i]} finalizou={props.finalizadas.includes(i)} data-test="flashcard">
+						<p data-test="flashcard-text">Pergunta {i+1}</p>
+						<img src={iconfinal[i]} onClick={()=>acionarFlashCard(i)} data-test={datatesticon[i]}></img>
 					</Perguntafechada>
-					<Perguntaabertapergunta abrirprimeirapergunta={abrirpergunta.includes(i)}>
+					<Perguntaabertapergunta abrirprimeirapergunta={abrirpergunta.includes(i)} data-test="flashcard-text">
 						{deck.question}
-						<Perguntaabertaimagem src={virar} onClick={()=>acionarResposta(i)}/>
+						<Perguntaabertaimagem src={virar} onClick={()=>acionarResposta(i)} data-test="turn-btn"/>
 					</Perguntaabertapergunta>
-					<Perguntaabertaresposta abrirresposta={virarresposta.includes(i)}>
+					<Perguntaabertaresposta abrirresposta={virarresposta.includes(i)} data-test="flashcard-text">
 						{deck.answer}
 						<Perguntaabertacaixabotao>
-							<Perguntaabertabotao background="#FF3030" onClick={()=>red(i)}>Não lembrei</Perguntaabertabotao>
-							<Perguntaabertabotao background="#FF922E" onClick={()=>yellow(i)}>Quase não lembrei</Perguntaabertabotao>
-							<Perguntaabertabotao background="#2FBE34" onClick={()=>green(i)}>Zap!</Perguntaabertabotao>
+							<Perguntaabertabotao background="#FF3030" onClick={()=>red(i)} data-test="no-btn">Não lembrei</Perguntaabertabotao>
+							<Perguntaabertabotao background="#FF922E" onClick={()=>yellow(i)} data-test="partial-btn">Quase não lembrei</Perguntaabertabotao>
+							<Perguntaabertabotao background="#2FBE34" onClick={()=>green(i)} data-test="zap-btn">Zap!</Perguntaabertabotao>
 						</Perguntaabertacaixabotao>
 
 					</Perguntaabertaresposta>
@@ -115,23 +116,30 @@ export default function Perguntas(props) {
 
   function decidircor(i){
     let arrayicones = [...iconfinal]
-    let arraycores = [...colorfinal] 
+    let arraycores = [...colorfinal]
+    let arraydata = [...datatesticon]
 
     if (arrayred.includes(i)){
       arrayicones[i] = erro
       arraycores[i] = "#FF3030"
+      arraydata[i] = "no-icon"
       setColor(arraycores)
       setIcon(arrayicones)
+      setdatatest(arraydata)
     }else if (arrayyellow.includes(i)){
       arrayicones[i] = quase
       arraycores[i] = "#FF922E"
+      arraydata[i] = "partial-icon"
       setColor(arraycores)
       setIcon(arrayicones)
+      setdatatest(arraydata)
     }else{
       arrayicones[i] = certo
       arraycores[i] = "#2FBE34"
+      arraydata[i] = "zap-icon"
       setColor(arraycores)
       setIcon(arrayicones)
+      setdatatest(arraydata)
     }
   }
 

@@ -4,7 +4,7 @@ import Perguntas from './Perguntas'
 
 export default function Resultado(props){
     return (
-        <Footerconcluidos>
+        <Footerconcluidos data-test="footer">
             {props.finalizadas.length}/{props.cards.length} CONCLUÍDOS
         </Footerconcluidos>
     )
