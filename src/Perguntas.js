@@ -17,27 +17,35 @@ const cards = [
 export default function Perguntas() {
 	const [normal, setnormal] = React.useState(cards.question)
 	const [contador,setcontador] = React.useState(1)
+  const [flashcard,setflashcard]= React.useState(false)
+  const [virouflashcard,setvirouflashcard] = React.useState([])
+  const [abrirpergunta,setabrirpergunta] = React.useState([])
+  const [virarresposta,setresposta] = React.useState([])
+  const [virarred,setred] = React.useState([])
+  const [viraryellow,setyellow] = React.useState([])
+  const [virargreen,setgreen] = React.useState([])
+
 	return (
 		<div>
-			{cards.map((deck) =>
+			{cards.map((deck,i) =>
 				<div>
-					<Perguntafechada>
-						<p>Pergunta {contador}</p>
-						<img src={play}></img>
+					<Perguntafechada verificarflashcard={virouflashcard.includes(i)}>
+						<p>Pergunta {i+1}</p>
+						<img src={play} onClick={()=>acionarFlashCard(i)}></img>
 					</Perguntafechada>
-					<Perguntaaberta>
+					<Perguntaabertapergunta abrirprimeirapergunta={abrirpergunta.includes(i)}>
 						{deck.question}
-						<Perguntaabertaimagem src={virar} />
-					</Perguntaaberta>
-					<Perguntaaberta>
+						<Perguntaabertaimagem src={virar} onClick={()=>acionarResposta(i)}/>
+					</Perguntaabertapergunta>
+					<Perguntaabertaresposta abrirresposta={virarresposta.includes(i)}>
 						{deck.answer}
 						<Perguntaabertacaixabotao>
-							<Perguntaabertabotaovermelho>Não lembrei</Perguntaabertabotaovermelho>
-							<Perguntaabertabotaoamarelo>Quase não lembrei</Perguntaabertabotaoamarelo>
-							<Perguntaabertabotaoverde>Zap!</Perguntaabertabotaoverde>
+							<Perguntaabertabotao background="#FF3030" onClick={()=>red(i)}>Não lembrei</Perguntaabertabotao>
+							<Perguntaabertabotao background="#FF922E" onClick={()=>yellow(i)}>Quase não lembrei</Perguntaabertabotao>
+							<Perguntaabertabotao background="#2FBE34" onClick={()=>green(i)}>Zap!</Perguntaabertabotao>
 						</Perguntaabertacaixabotao>
 
-					</Perguntaaberta>
+					</Perguntaabertaresposta>
 					
 				</div>
 				
@@ -45,13 +53,36 @@ export default function Perguntas() {
 		</div>
 	)
 
-	function contar(){
-		let atual = contador + 1
-		console.log(atual)
-		
-	}
+  function acionarFlashCard(i){
+    let arrayinicial = [...virouflashcard]
+    arrayinicial.push(i)
+    setvirouflashcard(arrayinicial)
+    virarpergunta(i)
+    
+  }
+
+  function virarpergunta(i){
+    let arrayinicial = [...abrirpergunta]
+    arrayinicial.push(i)
+    setabrirpergunta(arrayinicial)
+  }
+
+  function acionarResposta(i){
+    setabrirpergunta([])
+    let arrayinicial = [...virarresposta]
+    arrayinicial.push(i)
+    setresposta(arrayinicial)
+
+  }
+
+  function red(i){
+
+  }
+
 
 }
+
+
 
 const Perguntafechada = styled.div`
 width: 300px;
@@ -61,7 +92,7 @@ width: 300px;
   padding: 15px;
   box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15);
   border-radius: 5px;
-  display: flex;
+  display: ${props => props.verificarflashcard ? "none":"flex"};
   align-items: center;
   justify-content: space-between;
   position: relative;
@@ -79,7 +110,7 @@ width: 300px;
   width:20px;
   }`
 
-const Perguntaaberta = styled.div`
+const Perguntaabertapergunta = styled.div`
 width: 300px;
   margin: 12px;
   padding: 15px;
@@ -94,7 +125,26 @@ width: 300px;
   line-height: 22px;
   color: #333333;
   position: relative;
-  display: flex;
+  display: ${props => props.abrirprimeirapergunta ? "flex":"none"};
+  flex-direction: column;
+  justify-content: space-between;`
+
+const Perguntaabertaresposta= styled.div`
+width: 300px;
+  margin: 12px;
+  padding: 15px;
+  min-height: 100px;
+  background: #FFFFD5;
+  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15);
+  border-radius: 5px;
+  font-family: 'Recursive';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  color: #333333;
+  position: relative;
+  display: ${props => props.abrirresposta? "flex":"none"};
   flex-direction: column;
   justify-content: space-between;`
 
@@ -108,7 +158,7 @@ const Perguntaabertacaixabotao = styled.div`
   justify-content: space-between;
   `
 
-const Perguntaabertabotaoverde = styled.div`
+const Perguntaabertabotao = styled.div`
    width: 90px;
   font-family: 'Recursive';
   font-style: normal;
@@ -120,41 +170,7 @@ const Perguntaabertabotaoverde = styled.div`
   justify-content: center;
   text-align: center;
   color: #FFFFFF;
-  background: #2FBE34;
-  box-sizing: border-box;
-  border-radius: 5px;
-  padding:5px;`
-
-const Perguntaabertabotaoamarelo = styled.div`
-width: 90px;
-font-family: 'Recursive';
-font-style: normal;
-font-weight: 400;
-font-size: 12px;
-line-height: 14px;
-display: flex;
-align-items: center;
-justify-content: center;
-text-align: center;
-color: #FFFFFF;
-background: #FF922E;
-box-sizing: border-box;
-border-radius: 5px;
-padding:5px;`
-
-const Perguntaabertabotaovermelho = styled.div`
-   width: 90px;
-  font-family: 'Recursive';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: #FFFFFF;
-  background: #FF3030;
+  background: ${props => props.background};
   box-sizing: border-box;
   border-radius: 5px;
   padding:5px;`
