@@ -24,12 +24,17 @@ export default function Perguntas() {
   const [virarred,setred] = React.useState([])
   const [viraryellow,setyellow] = React.useState([])
   const [virargreen,setgreen] = React.useState([])
+  const [colorfinal,setColor] = React.useState("#333333")
+  const [finalizadas,setfinalizadas] = React.useState("")
+  let arraygreen = []
+  let arrayred = []
+  let arrayyellow = []
 
 	return (
 		<div>
 			{cards.map((deck,i) =>
 				<div>
-					<Perguntafechada verificarflashcard={virouflashcard.includes(i)}>
+					<Perguntafechada verificarflashcard={virouflashcard.includes(i)} color={colorfinal} finalizou={finalizadas.includes(i)}>
 						<p>Pergunta {i+1}</p>
 						<img src={play} onClick={()=>acionarFlashCard(i)}></img>
 					</Perguntafechada>
@@ -76,7 +81,57 @@ export default function Perguntas() {
   }
 
   function red(i){
+    setresposta([])
+    let arrayinicial = [...virarred]
+    let arraysecundario = [...finalizadas]
+    arraysecundario.push(i)
+    setfinalizadas(arraysecundario)
+    setvirouflashcard([])
+    arrayinicial.push(i)
+    arrayred.push(i)
+    setred(arrayinicial)
+    decidircor(i)
+    
+  }
 
+
+  function yellow(i){
+    setresposta([])
+    let arrayinicial = [...viraryellow]
+    let arraysecundario = [...finalizadas]
+    arraysecundario.push(i)
+    setfinalizadas(arraysecundario)
+    setvirouflashcard([])
+    arrayinicial.push(i)
+    arrayyellow.push(i)
+    setyellow(arrayinicial)
+    decidircor(i)
+  }
+
+
+  function green(i){
+    setresposta([])
+    let arrayinicial = [...virargreen]
+    let arraysecundario = [...finalizadas]
+    arraysecundario.push(i)
+    setfinalizadas(arraysecundario)
+    setvirouflashcard([])
+    arrayinicial.push(i)
+    arraygreen.push(i)
+
+    setgreen(arrayinicial)
+  
+    decidircor(i)
+  }
+
+  function decidircor(i){
+    if (arrayred.includes(i)){
+      setColor("#FF3030")
+    }else if (arrayyellow.includes(i)){
+      setColor("#FF922E")
+    }else{
+      setColor("#2FBE34")
+    }
   }
 
 
@@ -102,7 +157,8 @@ width: 300px;
   font-weight: 700;
   font-size: 16px;
   line-height: 19px;
-  color: #333333;
+  color: ${props => props.color};
+  text-decoration: ${props => props.finalizou ? "line-through":"none"};
   }
   img{
 	position: absolute;
