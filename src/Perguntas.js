@@ -25,8 +25,8 @@ export default function Perguntas(props) {
 	return (
 		<div>
 			{props.cards.map((deck,i) =>
-				<div>
-					<Perguntafechada verificarflashcard={virouflashcard.includes(i)} color={colorfinal[i]} finalizou={props.finalizadas.includes(i)} data-test="flashcard">
+				<div data-test="flashcard">
+					<Perguntafechada verificarflashcard={virouflashcard.includes(i)} color={colorfinal[i]} finalizou={props.finalizadas.includes(i)}>
 						<p data-test="flashcard-text">Pergunta {i+1}</p>
 						<img src={iconfinal[i]} onClick={()=>acionarFlashCard(i)} data-test={datatesticon[i]}></img>
 					</Perguntafechada>
