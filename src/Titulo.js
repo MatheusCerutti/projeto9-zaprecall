@@ -18,7 +18,7 @@ margin: 40px 0 20px 0;`
 const Logocontainerimagem = styled.img`
 width: 52px;`
 
-const Logocontainertitulo = styled.div`
+const Logocontainertitulo = styled.h1`
 font-family: 'Righteous';
   font-style: normal;
   font-weight: 400;

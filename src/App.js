@@ -1,11 +1,14 @@
 import Titulo from './Titulo'
 import styled from 'styled-components'
+import Perguntas from './Perguntas';
+import Resultado from './Resultado';
 
 function App() {
   return (
     <Screencontainer>
       <Titulo></Titulo>
-      <div>Teste</div>
+      <Perguntas></Perguntas>
+      <Resultado></Resultado>
     </Screencontainer>
 
   );
